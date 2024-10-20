@@ -7,6 +7,7 @@ const writableStream = fs.createWriteStream("./csvs/output.csv");
 //first find the names of the files in the directory
 const testFolder = './csvs/';
 let fileNames = [];
+
 fs.readdir(testFolder, (err, files) => {
   files.forEach((file) => {
     //ignore the output.csv file
@@ -20,6 +21,7 @@ fs.readdir(testFolder, (err, files) => {
   console.log('Finished scanning files, found ' + fileNames.length + ' files');
   processFiles();
 });
+
 
 let filesScanned = 0;
 let newFile = [];
@@ -84,6 +86,35 @@ function finalise() {
     //console.log(newFile);
 }
 
-/*
-finalise();
-*/
+
+
+//takes files from the "files" folder, read them 
+
+const tifFolder = './files/';
+let tifs = [];
+
+let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+fs.readdir(tifFolder, (err, files) => {
+  files.forEach((file) => {
+    tifs.push(file);
+
+    //split the file name
+    let newFile = file.split('_');
+    let monthIndex = (newFile[1].split('.')[0]-1);
+    let month = months[monthIndex % 12];
+    let bandIndex = (Math.ceil((monthIndex + 1 ) / 12))
+
+    console.log('Month: ' + month);
+    console.log('Band: ' + bandIndex);
+
+    let newFileName = `${month}_${bandIndex}.tif`;
+    
+    //create a new file in the outputBands folder with the new name
+    fs.copyFile(`./files/${file}`, `./outputBands/${newFileName}`, (err) => {
+        if (err) throw err;
+        console.log('File was copied to destination folder');
+    });
+    });
+
+});
