@@ -114,13 +114,18 @@ fs.readdir(tifFolder, (err, files) => {
     //the file may have type .tif.avi.org or something like that, so we need to get the full file type and add it tothe new file name
     
     fullFileType = fullFileType.join('.')
-    let newFileName = `${month}_${bandIndex}.${fullFileType}`;
+    //let newFileName = `${month}_${bandIndex}.${fullFileType}`;
     
     //create a new file in the outputBands folder with the new name
-    fs.copyFile(`./files/${file}`, `./outputBands/${newFileName}`, (err) => {
+    /*fs.copyFile(`./files/${file}`, `./outputBands/${newFileName}`, (err) => {
+        if (err) throw err;
+        console.log('File was copied to destination folder');
+    });*/
+    fs.copyFile(`./files/${file}`, `./outputBands/${month}/${file}`, (err) => {
         if (err) throw err;
         console.log('File was copied to destination folder');
     });
+    
     });
 
 });
