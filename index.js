@@ -108,7 +108,13 @@ fs.readdir(tifFolder, (err, files) => {
     console.log('Month: ' + month);
     console.log('Band: ' + bandIndex);
 
-    let newFileName = `${month}_${bandIndex}.tif`;
+    let fullFileType = file.split('.');
+    fullFileType.shift();
+
+    //the file may have type .tif.avi.org or something like that, so we need to get the full file type and add it tothe new file name
+    
+    fullFileType = fullFileType.join('.')
+    let newFileName = `${month}_${bandIndex}.${fullFileType}`;
     
     //create a new file in the outputBands folder with the new name
     fs.copyFile(`./files/${file}`, `./outputBands/${newFileName}`, (err) => {
